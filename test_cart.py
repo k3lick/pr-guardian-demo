@@ -2,7 +2,7 @@
 
 import unittest
 
-from cart import apply_discount, checkout, subtotal, with_tax
+from cart import apply_discount, bulk_discount, checkout, subtotal, with_tax
 
 
 class TestSubtotal(unittest.TestCase):
@@ -39,6 +39,17 @@ class TestCheckout(unittest.TestCase):
     def test_checkout_end_to_end(self):
         items = [{"price": 50.0, "qty": 2}]
         self.assertEqual(checkout(items, discount_percent=10), 96.75)
+
+
+class TestBulkDiscount(unittest.TestCase):
+    def test_small_order_no_discount(self):
+        self.assertEqual(bulk_discount(100.0, 3), 100.0)
+
+    def test_ten_items_gets_discount(self):
+        self.assertEqual(bulk_discount(100.0, 10), 90.0)
+
+    def test_large_order_gets_discount(self):
+        self.assertEqual(bulk_discount(100.0, 25), 90.0)
 
 
 if __name__ == "__main__":
